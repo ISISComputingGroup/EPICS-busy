@@ -1,8 +1,31 @@
-ASYN=$(SUPPORT)/asyn/master
-AUTOSAVE=$(SUPPORT)/autosave/master
-
 # optional extra local definitions here
 -include $(TOP)/configure/RELEASE.private
+
+SUPPORT=/corvette/home/epics/devel
+-include $(TOP)/../configure/SUPPORT.$(EPICS_HOST_ARCH)
+
+# ASYN is needed to compile asyn device support
+ASYN=$(SUPPORT)/asyn/master
+
+# AUTOSAVE is needed for the test application only
+AUTOSAVE=$(SUPPORT)/autosave/master
+
+# BUSY is this module
+BUSY=$(SUPPORT)/busy/master
+
+# EPICS_BASE usually appears last so other apps can override stuff:
+EPICS_BASE=/corvette/usr/local/epics-devel/base-3.15.5
+-include $(TOP)/../configure/EPICS_BASE.$(EPICS_HOST_ARCH)
+
+#Capfast users may need the following definitions
+#CAPFAST_TEMPLATES=
+#SCH2EDIF_PATH=
+
+# These lines allow developers to override these RELEASE settings
+# without having to modify this file directly.
+-include $(TOP)/../RELEASE.local
+-include $(TOP)/../RELEASE.$(EPICS_HOST_ARCH).local
+-include $(TOP)/configure/RELEASE.local
 
 include $(TOP)/../../../ISIS_CONFIG
 -include $(TOP)/../../../ISIS_CONFIG.$(EPICS_HOST_ARCH)
