@@ -1,19 +1,39 @@
-record(busy, "$(P)Busy")
-{
-   field(PINI, "$(PINI)")
+record(bo, "$(P)Busy") {
    field(DTYP, "asynInt32")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BUSY_VALUE")
+   field(OUT, "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))BUSY_VALUE")
+   field(ZNAM, "Zero")
+   field(ONAM, "One")
+   field(FLNK, "$(P)SetBusy")
+   info(asyn:READBACK, "1")
+}
+
+record(bi, "$(P)Bi") {
+   field(DTYP, "asynInt32")
+   field(INP, "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))BUSY_VALUE")
+   field(ZNAM, "Zero")
+   field(ONAM, "One")
+   field(SCAN, "I/O Intr")
+}
+
+record(calcout, "$(P)SetBusy")
+{
+    field(INPA, "$(P)Busy NPP")
+    field(CALC, "A")
+    field(OOPT, "Transition To Non-zero")
+    field(OUT,  "$(P)ActualBusy PP")
+}
+
+record(busy, "$(P)ActualBusy") {
    field(ZNAM, "Zero")
    field(ONAM, "One")
 }
 
-record(bi, "$(P)Bi")
+record(calcout, "$(P)ClearBusy")
 {
-   field(DTYP, "asynInt32")
-   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BUSY_VALUE")
-   field(ZNAM, "Zero")
-   field(ONAM, "One")
-   field(SCAN, "I/O Intr")
+    field(INPA, "$(P)Bi CP")
+    field(CALC, "A")
+    field(OOPT, "Transition To Zero")
+    field(OUT,  "$(P)ActualBusy PP")
 }
 
 record(longout, "$(P)NumCallbacks")
@@ -38,5 +58,3 @@ record(bo, "$(P)TriggerCallbacks")
    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_CALLBACKS")
    field(VAL,  "1")
 }
-
-
